@@ -503,56 +503,63 @@
       margin-bottom: 48px;
     }
 
-    .skills-groups {
+    .skills-grid {
       display: grid;
-      gap: 24px;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 14px;
     }
 
-    .skill-group {
+    .skill-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      padding: 24px 12px 20px;
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 28px 32px;
-    }
-    .skill-group-title {
-      font-family: 'Syne', sans-serif;
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: var(--accent);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      margin-bottom: 18px;
-    }
-    .skills-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-    .skill-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      padding: 7px 15px;
-      border-radius: 50px;
-      background: rgba(0,255,136,0.05);
-      border: 1px solid rgba(0,255,136,0.1);
-      color: #b0d4be;
-      font-size: 0.88rem;
-      font-weight: 400;
       transition: var(--transition);
+      cursor: default;
     }
-    .skill-chip:hover {
-      background: rgba(0,255,136,0.1);
-      border-color: rgba(0,255,136,0.25);
+    .skill-item:hover {
+      border-color: var(--border-hover);
+      background: var(--bg-card-hover);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 28px rgba(0,0,0,0.4), 0 0 0 1px rgba(0,255,136,0.07);
+    }
+    .skill-item:hover .skill-icon {
       color: var(--accent);
+      filter: drop-shadow(0 0 8px rgba(0,255,136,0.5));
     }
-    .skill-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--accent);
-      opacity: 0.6;
-      flex-shrink: 0;
+
+    .skill-icon {
+      color: #5a8c6e;
+      transition: color var(--transition), filter var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+    }
+    .skill-icon svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .skill-name {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #9dbfad;
+      text-align: center;
+      line-height: 1.3;
+    }
+
+    @media (max-width: 560px) {
+      .skills-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 360px) {
+      .skills-grid { grid-template-columns: repeat(2, 1fr); }
     }
 
     /* ===================== CONTACT ===================== */
@@ -838,41 +845,113 @@
       <div class="section-label fade-up">Stack</div>
       <h2 class="fade-up">Habilidades</h2>
 
-      <div class="skills-groups">
+      <div class="skills-grid fade-up">
 
-        <div class="skill-group fade-up">
-          <div class="skill-group-title">Frontend</div>
-          <div class="skills-list">
-            <span class="skill-chip"><span class="skill-dot"></span>React</span>
-            <span class="skill-chip"><span class="skill-dot"></span>Next.js</span>
-            <span class="skill-chip"><span class="skill-dot"></span>TypeScript</span>
-            <span class="skill-chip"><span class="skill-dot"></span>JavaScript</span>
-            <span class="skill-chip"><span class="skill-dot"></span>HTML / CSS</span>
-            <span class="skill-chip"><span class="skill-dot"></span>Tailwind CSS</span>
-            <span class="skill-chip"><span class="skill-dot"></span>Framer Motion</span>
-          </div>
+        <!-- React.js -->
+        <div class="skill-item">
+          <span class="skill-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
+              <circle cx="12" cy="12" r="2.2" fill="currentColor" stroke="none"/>
+              <ellipse cx="12" cy="12" rx="10" ry="4" stroke="currentColor"/>
+              <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)" stroke="currentColor"/>
+              <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(120 12 12)" stroke="currentColor"/>
+            </svg>
+          </span>
+          <span class="skill-name">React.js</span>
         </div>
 
-        <div class="skill-group fade-up">
-          <div class="skill-group-title">Backend &amp; datos</div>
-          <div class="skills-list">
-            <span class="skill-chip"><span class="skill-dot"></span>Supabase</span>
-            <span class="skill-chip"><span class="skill-dot"></span>Node.js</span>
-            <span class="skill-chip"><span class="skill-dot"></span>PostgreSQL</span>
-            <span class="skill-chip"><span class="skill-dot"></span>REST APIs</span>
-            <span class="skill-chip"><span class="skill-dot"></span>Stripe</span>
-          </div>
+        <!-- Next.js -->
+        <div class="skill-item">
+          <span class="skill-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M11.572 0c-.176 0-.31.001-.358.007a19.76 19.76 0 0 1-.364.033C7.443.346 4.25 2.185 2.228 5.012a11.875 11.875 0 0 0-2.119 5.243c-.096.659-.108.854-.108 1.747s.012 1.089.108 1.748c.652 4.506 3.86 8.292 8.209 9.695.779.25 1.6.422 2.534.525.363.04 1.935.04 2.299 0 1.611-.178 2.977-.577 4.323-1.264.207-.106.247-.134.219-.158-.02-.013-.9-1.193-1.955-2.62l-1.919-2.592-2.404-3.558a338.739 338.739 0 0 0-2.422-3.556c-.009-.002-.018 1.579-.023 3.51-.007 3.38-.01 3.515-.052 3.595a.426.426 0 0 1-.206.214c-.075.037-.14.044-.495.044H7.81l-.108-.068a.438.438 0 0 1-.157-.171l-.05-.106.006-4.703.007-4.705.072-.092a.645.645 0 0 1 .174-.143c.096-.047.134-.051.54-.051.478 0 .558.018.682.154.035.038 1.337 1.999 2.895 4.361a10760.433 10760.433 0 0 0 4.735 7.17l1.9 2.879.096-.063a12.317 12.317 0 0 0 2.466-2.163 11.944 11.944 0 0 0 2.824-6.134c.096-.66.108-.854.108-1.748 0-.893-.012-1.088-.108-1.747C23.495 3.67 20.296.296 15.971.049c-.28-.016-4.312-.034-4.399-.049zm3.559 7.27c.091.045.163.104.218.178.03.043 1.36 2.024 2.957 4.402a3019.907 3019.907 0 0 1 2.94 4.408l-.009.023c-.007.015-1.034.069-1.041.057-.003-.006-1.324-1.988-2.935-4.404a1948.39 1948.39 0 0 1-2.927-4.408l.003-.021c.003-.012.03-.025.057-.036.043-.018.09-.023.395-.023h.342z"/>
+            </svg>
+          </span>
+          <span class="skill-name">Next.js</span>
         </div>
 
-        <div class="skill-group fade-up">
-          <div class="skill-group-title">Herramientas</div>
-          <div class="skills-list">
-            <span class="skill-chip"><span class="skill-dot"></span>Git / GitHub</span>
-            <span class="skill-chip"><span class="skill-dot"></span>Figma</span>
-            <span class="skill-chip"><span class="skill-dot"></span>VS Code</span>
-            <span class="skill-chip"><span class="skill-dot"></span>Vercel</span>
-            <span class="skill-chip"><span class="skill-dot"></span>Cursor</span>
-          </div>
+        <!-- JavaScript -->
+        <div class="skill-item">
+          <span class="skill-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <rect width="24" height="24" rx="3" fill="none" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M7.5 17.5c.4.7 1 1.1 1.9 1.1 1 0 1.6-.5 1.6-1.2 0-.8-.6-1.1-1.7-1.6l-.6-.2c-1.6-.7-2.7-1.6-2.7-3.4 0-1.7 1.3-3 3.4-3 1.5 0 2.5.5 3.2 1.8l-1.8 1.1c-.4-.7-.8-1-1.4-1-.7 0-1.1.4-1.1 1 0 .7.4 1 1.5 1.4l.6.3c1.9.8 3 1.7 3 3.5 0 2-1.6 3.2-3.7 3.2-2.1 0-3.4-1-4-2.4l1.8-1zM15.5 17.7c.3.5.6.9 1.2.9.6 0 1-.3 1-1.3V11h2.2v6.4c0 2.2-1.3 3.2-3.1 3.2-1.7 0-2.7-.9-3.2-1.9l1.9-1z"/>
+            </svg>
+          </span>
+          <span class="skill-name">JavaScript</span>
+        </div>
+
+        <!-- HTML5 -->
+        <div class="skill-item">
+          <span class="skill-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M1.5 0h21l-1.91 21.563L11.977 24l-8.564-2.438L1.5 0zm7.031 9.75l-.232-2.718 10.059.003.23-2.622L5.412 4.41l.698 8.01h9.126l-.326 3.426-2.91.804-2.955-.81-.188-2.11H6.248l.33 4.171L12 19.351l5.379-1.443.744-8.157H8.531z"/>
+            </svg>
+          </span>
+          <span class="skill-name">HTML5</span>
+        </div>
+
+        <!-- CSS3 -->
+        <div class="skill-item">
+          <span class="skill-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M1.5 0h21l-1.91 21.563L11.977 24l-8.565-2.438L1.5 0zm17.09 4.413L5.41 4.41l.213 2.622 10.125.002-.255 2.716h-6.64l.24 2.573h6.182l-.366 3.523-2.91.804-2.956-.81-.188-2.11h-2.61l.29 3.855L12 19.288l5.373-1.53L18.59 4.413z"/>
+            </svg>
+          </span>
+          <span class="skill-name">CSS3</span>
+        </div>
+
+        <!-- Tailwind CSS -->
+        <div class="skill-item">
+          <span class="skill-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12.001 4.8c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.565.89 2.288 1.624C13.666 10.618 15.027 12 18.001 12c3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.565-.89-2.288-1.624C16.337 6.182 14.976 4.8 12.001 4.8zm-6 7.2c-3.2 0-5.2 1.6-6 4.8 1.2-1.6 2.6-2.2 4.2-1.8.913.228 1.565.89 2.288 1.624 1.177 1.194 2.538 2.576 5.512 2.576 3.2 0 5.2-1.6 6-4.8-1.2 1.6-2.6 2.2-4.2 1.8-.913-.228-1.565-.89-2.288-1.624C10.337 13.382 8.976 12 6.001 12z"/>
+            </svg>
+          </span>
+          <span class="skill-name">Tailwind CSS</span>
+        </div>
+
+        <!-- Expo -->
+        <div class="skill-item">
+          <span class="skill-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M0 21.967a1.7 1.7 0 0 0 2.308.63c.51-.294 4.916-8.421 7.003-12.276.197-.366.543-.608.943-.608.4 0 .746.242.944.608 2.087 3.855 6.493 11.982 7.003 12.276a1.7 1.7 0 0 0 2.308-.63c.456-.79.263-1.666-.167-2.449C19.027 17.57 14.002 8.45 12.903 6.514a1.674 1.674 0 0 0-1.649-.864 1.674 1.674 0 0 0-1.649.864C8.505 8.45 3.48 17.57.167 19.518c-.43.783-.623 1.659-.167 2.449z"/>
+            </svg>
+          </span>
+          <span class="skill-name">Expo</span>
+        </div>
+
+        <!-- React Native -->
+        <div class="skill-item">
+          <span class="skill-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
+              <circle cx="12" cy="12" r="2.2" fill="currentColor" stroke="none"/>
+              <ellipse cx="12" cy="12" rx="10" ry="4" stroke="currentColor"/>
+              <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)" stroke="currentColor"/>
+              <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(120 12 12)" stroke="currentColor"/>
+            </svg>
+          </span>
+          <span class="skill-name">React Native</span>
+        </div>
+
+        <!-- Git -->
+        <div class="skill-item">
+          <span class="skill-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M23.546 10.93L13.067.452a1.55 1.55 0 0 0-2.188 0L8.708 2.627l2.76 2.76a1.838 1.838 0 0 1 2.327 2.341l2.658 2.66a1.838 1.838 0 0 1 1.903 3.01 1.837 1.837 0 0 1-2.59 0 1.846 1.846 0 0 1-.404-2.002L12.86 8.955v6.525c.176.086.342.203.488.348a1.848 1.848 0 0 1 0 2.6 1.846 1.846 0 0 1-2.609 0 1.848 1.848 0 0 1 0-2.6c.182-.18.387-.316.605-.407V8.835a1.834 1.834 0 0 1-.985-2.405L7.636 3.7.45 10.881a1.55 1.55 0 0 0 0 2.187l10.48 10.478a1.55 1.55 0 0 0 2.186 0l10.43-10.43a1.55 1.55 0 0 0 0-2.187"/>
+            </svg>
+          </span>
+          <span class="skill-name">Git</span>
+        </div>
+
+        <!-- GitHub -->
+        <div class="skill-item">
+          <span class="skill-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+            </svg>
+          </span>
+          <span class="skill-name">GitHub</span>
         </div>
 
       </div>
@@ -888,23 +967,17 @@
 
         <div class="section-label" style="justify-content:center; margin-bottom:16px;">Trabajemos juntos</div>
 
-        <h2>¿Tienes un proyecto<br>en mente?</h2>
+        <h2>¿Tienes un proyecto<br>en mente? Hablemos.</h2>
         <p>Cuéntame qué estás construyendo. Respondo en menos de 24 h.</p>
 
         <div class="contact-links">
-          <a href="mailto:ruben@ejemplo.com" class="btn btn-primary">
+          <a href="mailto:rubencastillo.dev@gmail.com" class="btn btn-primary">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/>
             </svg>
             Enviar email
           </a>
-          <a href="https://linkedin.com/" target="_blank" rel="noopener" class="btn btn-outline">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-            </svg>
-            LinkedIn
-          </a>
-          <a href="https://github.com/" target="_blank" rel="noopener" class="btn btn-outline">
+          <a href="https://github.com/Runbex789" target="_blank" rel="noopener" class="btn btn-outline">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
             </svg>
@@ -918,7 +991,7 @@
   </main>
 
   <footer>
-    Hecho con <span>♥</span> por Rubén Castillo · 2025
+    © 2025 <span>Rubén Castillo</span>
   </footer>
 
   <script>
