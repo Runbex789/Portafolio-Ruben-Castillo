@@ -319,12 +319,38 @@ section {
 /* --- Image side --- */
 .project-image {
   position: relative;
-  min-height: 260px;
-  background: var(--bg-card);
+  min-height: 320px;
+  background: #080c0a;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+}
+.project-image-img {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  z-index: 1;
+}
+.project-image-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 2;
+  pointer-events: none;
+  /* Solo visible cuando la imagen cargó — se oculta si img está display:none */
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.project-image:has(.project-image-img:not([style*="display:none"])) .project-image-overlay {
+  opacity: 1;
+}
+/* Ocultar placeholder cuando la imagen cargó correctamente */
+.project-image:has(.project-image-img:not([style*="display:none"])) .project-image-inner,
+.project-image:has(.project-image-img:not([style*="display:none"])) .project-image-frame {
+  opacity: 0;
+  pointer-events: none;
 }
 .project-image-inner {
   position: absolute;
@@ -500,7 +526,7 @@ section {
   }
   .project-card.reversed .project-image { order: 0; }
   .project-card.reversed .project-content { order: 0; }
-  .project-image { min-height: 180px; }
+  .project-image { min-height: 260px; }
   .project-content { padding: 28px 24px; }
 }
 
