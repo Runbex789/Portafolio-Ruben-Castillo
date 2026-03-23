@@ -35,11 +35,3 @@ document.querySelectorAll('.fade-up').forEach((el) => {
   observer.observe(el);
 });
 
-// ===================== AVATAR: ocultar img rota =====================
-// Si el src del avatar está vacío, el onerror inline ya lo maneja.
-// Esta función adicional limpia el atributo src vacío para evitar
-// que algunos navegadores muestren el ícono de imagen rota.
-const avatarImg = document.querySelector('.avatar-img');
-if (avatarImg && !avatarImg.getAttribute('src')) {
-  avatarImg.style.display = 'none';
-}
