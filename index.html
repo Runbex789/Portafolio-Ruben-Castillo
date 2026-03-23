@@ -161,16 +161,31 @@
       position: absolute;
       inset: 0;
       border-radius: 50%;
-      background: linear-gradient(135deg, rgba(0,255,136,0.08), transparent 60%);
+      background: linear-gradient(135deg, rgba(0,255,136,0.1), transparent 60%);
+      pointer-events: none;
+      z-index: 2;
     }
-    .hero-avatar-text {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.72rem;
-      color: var(--text-muted);
-      text-align: center;
-      line-height: 1.4;
-      padding: 8px;
+    /* Foto real: ocupa todo el avatar cuando src es válido */
+    .avatar-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      border-radius: 50%;
       z-index: 1;
+    }
+    /* Iniciales de respaldo */
+    .avatar-initials {
+      font-family: 'Syne', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--accent);
+      letter-spacing: -0.02em;
+      text-shadow: 0 0 20px rgba(0,255,136,0.45);
+      line-height: 1;
+      z-index: 0;
     }
 
     /* Name */
@@ -643,20 +658,22 @@
       transform: translateY(0);
     }
 
-    /* Stagger delays */
-    .fade-up:nth-child(1) { transition-delay: 0ms; }
-    .fade-up:nth-child(2) { transition-delay: 80ms; }
-    .fade-up:nth-child(3) { transition-delay: 160ms; }
-    .fade-up:nth-child(4) { transition-delay: 240ms; }
-    .fade-up:nth-child(5) { transition-delay: 320ms; }
-    .fade-up:nth-child(6) { transition-delay: 400ms; }
+    /* ===================== REDUCED MOTION ===================== */
+    @media (prefers-reduced-motion: reduce) {
+      .fade-up {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+      }
+      .deco-circle { animation: none !important; }
+      .badge-dot   { animation: none !important; }
+    }
 
     /* ===================== RESPONSIVE ===================== */
     @media (max-width: 600px) {
       main { padding: 0 18px; }
       section { padding: 72px 0; }
       .contact-box { padding: 36px 24px; }
-      .project-card { padding: 24px; }
     }
   </style>
 </head>
@@ -672,8 +689,24 @@
     <!-- ==================== HERO ==================== -->
     <section id="hero">
 
+      <!--
+        ╔══════════════════════════════════════════════╗
+        ║  FOTO DE PERFIL                              ║
+        ║  Para agregar tu foto, cambia el src vacío   ║
+        ║  de la etiqueta <img> por la URL real:       ║
+        ║  src="./foto.jpg"  o  src="https://..."      ║
+        ║  La imagen cubre el placeholder de forma     ║
+        ║  automática en cuanto el src sea válido.     ║
+        ╚══════════════════════════════════════════════╝
+      -->
       <div class="hero-avatar fade-up">
-        <div class="hero-avatar-text">Foto<br>próximamente</div>
+        <img
+          class="avatar-img"
+          src=""
+          alt="Foto de Rubén Castillo"
+          onerror="this.style.display='none'"
+        />
+        <span class="avatar-initials" aria-hidden="true">RC</span>
       </div>
 
       <div class="section-label fade-up">Disponible para proyectos</div>
@@ -692,7 +725,7 @@
       </p>
 
       <div class="hero-cta fade-up">
-        <a href="https://github.com/" target="_blank" rel="noopener" class="btn btn-primary">
+        <a href="https://github.com/Runbex789" target="_blank" rel="noopener" class="btn btn-primary">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
             <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
           </svg>
@@ -996,19 +1029,50 @@
 
   <script>
     // ===================== INTERSECTION OBSERVER — fade-up =====================
+    // Stagger dinámico: cada .fade-up recibe un delay según su posición
+    // entre hermanos .fade-up del mismo padre, para que la animación sea
+    // escalonada de forma natural en cada sección.
+    const STAGGER = 90; // ms entre elementos del mismo grupo
+
+    function asignarStagger(el) {
+      const hermanos = [...el.parentElement.children].filter(
+        (h) => h.classList.contains('fade-up')
+      );
+      const idx = hermanos.indexOf(el);
+      el.style.transitionDelay = `${idx * STAGGER}ms`;
+    }
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add('visible');
+            // Limpiar delay al terminar para no bloquear transiciones futuras
+            entry.target.addEventListener(
+              'transitionend',
+              () => { entry.target.style.transitionDelay = '0ms'; },
+              { once: true }
+            );
             observer.unobserve(entry.target);
           }
         });
       },
-      { threshold: 0.12 }
+      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
     );
 
-    document.querySelectorAll('.fade-up').forEach((el) => observer.observe(el));
+    document.querySelectorAll('.fade-up').forEach((el) => {
+      asignarStagger(el);
+      observer.observe(el);
+    });
+
+    // ===================== AVATAR: ocultar img rota =====================
+    // Si el src del avatar está vacío, el onerror inline ya lo maneja.
+    // Esta función adicional limpia el atributo src vacío para evitar
+    // que algunos navegadores muestren el ícono de imagen rota.
+    const avatarImg = document.querySelector('.avatar-img');
+    if (avatarImg && !avatarImg.getAttribute('src')) {
+      avatarImg.style.display = 'none';
+    }
   </script>
 
 </body>
